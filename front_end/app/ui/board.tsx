@@ -11,10 +11,8 @@ function Board() {
     })
 
    })
-   console.log("Board:", board)
-   console.log("Tiles:", tiles)
 return (
-    <div className="board">
+    <div className="board grid-cols-9">
         {tiles}
     </div>
 )
