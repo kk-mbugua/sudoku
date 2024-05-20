@@ -1,32 +1,42 @@
 "use client";
 
-import { useState, useEffect } from "react"
-import generateBoard from "../lib/generateBoard"
-import Cell from "./cell"
+import { useState, useEffect } from "react";
+import Cell from "./cell";
+import { BoardType } from "../lib/definitions";
+import Sudoku from "../lib/sudoku";
+import generateEmptyBoard from "../utilities/emptyBoard"
+
 
 function Board() {
-   const [board, setBoard] = useState<(number | undefined)[][]>([]);
+  const [sudoku] = useState<Sudoku>(new Sudoku);
+  const [board, setBoard] = useState<BoardType>(generateEmptyBoard())
 
-   useEffect(() => {
-    const initialBoard: number[][] = generateBoard();
-    setBoard(initialBoard);
+  useEffect(() => {
+    const temp = sudoku.generateGameBoard("easy")
+    console.log("TEMP:", temp)
+    console.log(" ")
+    console.log(" ")
+    setBoard(temp);
   }, []);
 
-   const tiles = board.map((row, rowIndex) => {
-    const cells = row.map((cell: number | undefined, colIndex: number) => {
-        return <Cell value={cell} key={`${rowIndex}-${colIndex}`}/>
-    })
+  const tiles = board.map((row, rowIndex) => {
+    const cells = row.map((cell, colIndex) => {
+      return <Cell value={cell} key={`${rowIndex}-${colIndex}`} />;
+    });
     return (
-        <div className="row flex flex-row" key={rowIndex}>{cells}</div>
-    )
-   })
+      <div className="row flex flex-row" key={rowIndex}>
+        {cells}
+      </div>
+    );
+  });
 
-   console.log("board:", board)
-return (
+  
+
+  return (
     <div className="board">
-        {tiles}
+      {tiles}
     </div>
-)
+  );
 }
 
-export default Board
+export default Board;
