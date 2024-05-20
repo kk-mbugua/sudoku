@@ -9,6 +9,7 @@ class Sudoku {
     gameBoardSet: boolean = false;
     gameBoard: BoardType;
     isValid: boolean | undefined;
+    difficulty: Difficulty = "easy"
 
 
     constructor(gameBoard?: BoardType) {
@@ -39,16 +40,36 @@ class Sudoku {
     }
     
     
-    solveBoard() {
-        return this.board
+    solveBoard(row:number, col:number):boolean {
+        if (row === this.size - 1 && col === this.size) {
+            return true;
+        }
+        if (col === this.size) {
+            row++;
+            col = 0;
+        }
+        if (this.board[row][col] !== undefined) {
+            return this.solveBoard(row, col + 1);
+        }
+        for (let num = 1; num <= 9; num++) {
+            if (this.isValidInput(num, row, col)) {
+                this.board[row][col] = num;
+                if (this.solveBoard(row, col + 1)) {
+                    return true;
+                }
+                this.board[row][col] = undefined;
+            }
+        }
+        return false;   
     }
     
     removeKDigits(){
     }
     
-    generateGameBoard(difficulty: Difficulty) {
+    generateGameBoard(difficulty?: Difficulty): BoardType {
         if (this.gameBoardSet) return this.board;
         this.fillDiagonal();
+        this.solveBoard(0,0);
         this.gameBoardSet = true;
         return this.board
         // return this.gameBoard
