@@ -5,6 +5,7 @@ import generateEmptyBoard from "../utilities/emptyBoard";
 
 class Sudoku {
     board: BoardType;
+    size: number = 9;
     gameBoardSet: boolean = false;
     gameBoard: BoardType;
     isValid: boolean | undefined;
@@ -39,7 +40,7 @@ class Sudoku {
     
     
     solveBoard() {
-        return []
+        return this.board
     }
     
     removeKDigits(){
@@ -53,8 +54,66 @@ class Sudoku {
         // return this.gameBoard
     }
 
-    isValidBoard(){
+    isValidBoard(): boolean{
+        const boxes: {[key: string]: Set<number|undefined>} = {};
+        for (var k=0; k<3; k++) {
+            for (var l=0; l<3; l++){
+                boxes[`${k}, ${l}`] = new Set()
+            }
+        }
+        
+        for (var i=0; i<9; i++){
+            const row_set = new Set();
+            const col_set = new Set();
+            for (var j=0; j<9; j++){
+                const row_val = this.gameBoard[i][j];
+                const col_val = this.gameBoard[j][i];
+                k = Math.floor(i/3)
+                l = Math.floor(j/3)
+                if (row_val !== undefined && (row_set.has(row_val) || boxes[`${k}, ${l}`].has(row_val))) return false;
 
+                if (col_val !== undefined && (col_set.has(col_val))) return false;
+
+                row_set.add(row_val)
+                col_set.add(col_val)
+                boxes[`${k}, ${l}`].add(row_val)  
+            }              
+        }
+        return true;
+    }
+
+    isValidInput(val: number, row: number, col: number): boolean {
+        return this.isValidInputRow(val, row) && this.isValidInputCol(val, col) && this.isValidInputBox(val, row, col);
+    }
+
+    isValidInputRow(val: number, row: number): boolean {
+        return !this.board[row].includes(val);
+    }
+
+    isValidInputCol(val: number, col:number): boolean {
+        for (var i=0; i < 9; i++) {
+            if (this.board[i][col] === val) return false;
+        }
+        return true;
+    }
+
+    isValidInputBox(val: number, row: number, col: number): boolean {
+        const startRow = Math.floor(row/3);
+        const startCol = Math.floor(col/3);
+        for (var i=startRow; i<startRow+3; i++) {
+            for (var j=startCol; j<startCol+3; j++) {
+                if (this.board[i][j] === val) return false;
+            }
+        }
+        return true;
+    }
+
+    possibleInputs(row: number, col: number): number[] {
+        const res = []
+        for (var val = 1; val<=9; val++) {
+            if (this.isValidInput(val, row, col)) res.push(val)
+        }
+        return res;
     }
 
 }
