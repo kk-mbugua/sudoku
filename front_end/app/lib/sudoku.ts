@@ -40,17 +40,23 @@ class Sudoku {
     }
     
     
-    solveBoard(row:number, col:number):boolean {
-        if (row === this.size - 1 && col === this.size) {
+    solveBoard(row:number = 0, col:number = 0):boolean {
+        // Check if we have reached the end of the matrix
+        if (row >= 9) {
             return true;
         }
-        if (col === this.size) {
-            row++;
-            col = 0;
+
+        // Move to the next row if we have reached the end of the current row
+        if (col >= 9) {
+            return this.solveBoard(row+1, 0);
         }
+
+        // Skip cells that are already filled
         if (this.board[row][col] !== undefined) {
-            return this.solveBoard(row, col + 1);
+            return this.solveBoard(row, col+1);
         }
+
+        // Try filling the current cell with a valid value
         for (let num = 1; num <= 9; num++) {
             if (this.isValidInput(num, row, col)) {
                 this.board[row][col] = num;
@@ -60,7 +66,9 @@ class Sudoku {
                 this.board[row][col] = undefined;
             }
         }
-        return false;   
+
+        // No valid value was found, so backtrack
+        return false;
     }
     
     removeKDigits(){
@@ -68,8 +76,8 @@ class Sudoku {
     
     generateGameBoard(difficulty?: Difficulty): BoardType {
         if (this.gameBoardSet) return this.board;
-        this.fillDiagonal();
-        this.solveBoard(0,0);
+        // this.fillDiagonal();
+        const solvable = this.solveBoard();
         this.gameBoardSet = true;
         return this.board
         // return this.gameBoard
@@ -119,8 +127,8 @@ class Sudoku {
     }
 
     isValidInputBox(val: number, row: number, col: number): boolean {
-        const startRow = Math.floor(row/3);
-        const startCol = Math.floor(col/3);
+        const startRow = Math.floor(row/3) * 3;
+        const startCol = Math.floor(col/3) * 3;
         for (var i=startRow; i<startRow+3; i++) {
             for (var j=startCol; j<startCol+3; j++) {
                 if (this.board[i][j] === val) return false;

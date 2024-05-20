@@ -12,11 +12,7 @@ function Board() {
   const [board, setBoard] = useState<BoardType>(generateEmptyBoard())
 
   useEffect(() => {
-    const temp = sudoku.generateGameBoard("easy")
-    console.log("TEMP:", temp)
-    console.log(" ")
-    console.log(" ")
-    setBoard(temp);
+    setBoard(sudoku.generateGameBoard("easy"));
   }, []);
 
   const tiles = board.map((row, rowIndex) => {
