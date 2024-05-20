@@ -71,45 +71,87 @@ class Sudoku {
         return false;
     }
     
-    removeKDigits(){
-    }
+    removeNDigits(n: number) {
+        const maxRetries = 100; // Limit to prevent infinite loop
+        let retries = 0;
     
-    generateGameBoard(difficulty?: Difficulty): BoardType {
-        if (this.gameBoardSet) return this.board;
-        // this.fillDiagonal();
-        const solvable = this.solveBoard();
-        this.gameBoardSet = true;
-        return this.board
-        // return this.gameBoard
-    }
-
-    isValidBoard(): boolean{
-        const boxes: {[key: string]: Set<number|undefined>} = {};
-        for (var k=0; k<3; k++) {
-            for (var l=0; l<3; l++){
-                boxes[`${k}, ${l}`] = new Set()
+        while (n > 0 && retries < maxRetries) {
+            retries++;
+            const row = Math.floor(Math.random() * this.size);
+            const col = Math.floor(Math.random() * this.size);
+    
+            if (this.gameBoard[row][col] !== undefined) {
+                const backup = this.gameBoard[row][col];
+                this.gameBoard[row][col] = undefined;
+    
+                // Make a deep copy of the board to check its solvability
+                const boardCopy: BoardType = this.gameBoard.map(row => [...row]);
+    
+                if (this.solveBoard(0, 0)) {
+                    // If the board is still solvable, keep the change
+                    n--;
+                } else {
+                    // Restore the value if the board becomes unsolvable
+                    this.gameBoard[row][col] = backup;
+                }
             }
         }
-        
-        for (var i=0; i<9; i++){
+    
+        if (retries >= maxRetries) {
+            console.warn("Max retries reached while removing digits.");
+        }
+    }
+    
+    
+    generateGameBoard(difficulty?: Difficulty) {
+        if (this.gameBoardSet) return this.gameBoard;
+        this.solveBoard()
+        this.gameBoard = this.board.map(row => [...row]);
+        switch (difficulty) {
+            case "easy":
+                this.removeNDigits(20);
+                break;
+            case "medium":
+                this.removeNDigits(40);
+                break;
+            case "hard":
+                this.removeNDigits(60);
+                break;
+            default:
+                this.removeNDigits(20);
+                break;
+        }
+        this.gameBoardSet = true;
+        return this.gameBoard;
+    }
+
+    isValidBoard(board: BoardType = this.gameBoard): boolean {
+        const boxes: {[key: string]: Set<number|undefined>} = {};
+        for (let k = 0; k < 3; k++) {
+            for (let l = 0; l < 3; l++) {
+                boxes[`${k},${l}`] = new Set();
+            }
+        }
+    
+        for (let i = 0; i < 9; i++) {
             const row_set = new Set();
             const col_set = new Set();
-            for (var j=0; j<9; j++){
-                const row_val = this.gameBoard[i][j];
-                const col_val = this.gameBoard[j][i];
-                k = Math.floor(i/3)
-                l = Math.floor(j/3)
-                if (row_val !== undefined && (row_set.has(row_val) || boxes[`${k}, ${l}`].has(row_val))) return false;
-
-                if (col_val !== undefined && (col_set.has(col_val))) return false;
-
-                row_set.add(row_val)
-                col_set.add(col_val)
-                boxes[`${k}, ${l}`].add(row_val)  
-            }              
+            for (let j = 0; j < 9; j++) {
+                const row_val = board[i][j];
+                const col_val = board[j][i];
+                const k = Math.floor(i / 3);
+                const l = Math.floor(j / 3);
+                if (row_val !== undefined && (row_set.has(row_val) || boxes[`${k},${l}`].has(row_val))) return false;
+                if (col_val !== undefined && col_set.has(col_val)) return false;
+    
+                row_set.add(row_val);
+                col_set.add(col_val);
+                boxes[`${k},${l}`].add(row_val);
+            }
         }
         return true;
     }
+    
 
     isValidInput(val: number, row: number, col: number): boolean {
         return this.isValidInputRow(val, row) && this.isValidInputCol(val, col) && this.isValidInputBox(val, row, col);
