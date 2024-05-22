@@ -56,7 +56,7 @@ function Game() {
 
   return (
     <div>
-      <Board board={board} selected={selected} onCellClick={handleCellClick} />
+      <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} />
       <div className="flex flex-row justify-between">
             <button className={btnClassName}>Reset Board</button>
             <button className={btnClassName}>Fill Cell</button>
