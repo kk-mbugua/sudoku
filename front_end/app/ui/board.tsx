@@ -1,27 +1,37 @@
 "use client";
 
+import { memo } from "react";
 import Cell from "./cell";
 import { BoardType } from "../lib/definitions";
-import Sudoku from "../lib/sudoku";
 
+type BoardProps = {
+    board: BoardType,
+    selected: [number, number],
+    onCellClick: (row: number, col: number) => void;
+}
 
-function Board({ board, sudoku }: { board: BoardType; sudoku: Sudoku }) {
-    const tiles = board.map((row, rowIndex) => {
-        const cells = row.map((cell, colIndex) => {
-        return <Cell value={cell} key={`${rowIndex}-${colIndex}`} />;
-        });
-        return (
-        <div className="row flex flex-row" key={rowIndex}>
-            {cells}
-        </div>
-        );
+function Board({ board, selected, onCellClick}: BoardProps) {
+  const tiles = board.map((row, rowIndex) => {
+    const cells = row.map((col, colIndex) => {
+      return (
+        <Cell
+
+          selected={rowIndex === selected[0] && colIndex === selected[1]}
+          onClick={() => onCellClick(rowIndex, colIndex)}
+          key={`${rowIndex}-${colIndex}`}
+        >
+            {col}
+        </Cell>
+      );
     });
-
     return (
-        <div className="board">
-        {tiles}
-        </div>
+      <div className="row flex flex-row" key={rowIndex}>
+        {cells}
+      </div>
     );
-    }
+  });
 
-export default Board;
+  return <div className="board">{tiles}</div>;
+}
+
+export default memo(Board);

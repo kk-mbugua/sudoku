@@ -1,44 +1,28 @@
 
 import { BoardType, Difficulty } from "./definitions";
-import generateEmptyBoard from "../utilities/emptyBoard";
-
+import { generateEmptyBoard, deepCopy2DArray } from "./utils";
 
 class Sudoku {
-    board: BoardType;
     size: number = 9;
-    gameBoardSet: boolean = false;
+    board: BoardType;
     gameBoard: BoardType;
+    ogGameBoard: BoardType;
+    gameBoardSet: boolean = false;
     isValid: boolean | undefined;
     difficulty: Difficulty = "easy"
 
 
     constructor(gameBoard?: BoardType) {
         this.board = generateEmptyBoard();
-        this.gameBoard = gameBoard ? gameBoard : generateEmptyBoard();    
+        this.gameBoard = gameBoard ? gameBoard : generateEmptyBoard();   
+        this.ogGameBoard = gameBoard ? gameBoard : generateEmptyBoard();   
     }
 
-    fillDiagonal() {
-        for (var point = 0; point < 9; point += 3) {
-            const values = Array.from({ length: 9 }, (_, i) => i + 1);
-            const upperLimit = point+3;
-            for (var row = point; row < upperLimit; row++) {
-                for (var col = point; col < upperLimit; col++) {
-                    const max = values.length-1;
-                    const index = Math.floor(Math.random() * (max + 1));
-                    const value = values.splice(index, 1)[0];
-                    this.board[row][col] = value;
-                }   
-            }
-
+    updateCell(row: number, col: number, value: number | undefined) {
+        if (this.ogGameBoard[row][col] === undefined) {
+          this.gameBoard[row][col] = value;
         }
-        
-        return []
     }
-
-    fillCell(row: number, col: number, value: number | undefined) {
-        this.gameBoard[row][col] = value;
-    }
-    
     
     solveBoard(row:number = 0, col:number = 0):boolean {
         // Check if we have reached the end of the matrix
@@ -122,6 +106,7 @@ class Sudoku {
                 break;
         }
         this.gameBoardSet = true;
+        this.ogGameBoard = deepCopy2DArray(this.gameBoard)
         return this.gameBoard;
     }
 
