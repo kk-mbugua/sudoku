@@ -54,11 +54,22 @@ function Game() {
     };
   }, [handleKeyDown]);
 
+  const handleResetBoard = () => {
+    sudoku.gameBoard = sudoku.ogGameBoard;
+    setBoard(sudoku.gameBoard);
+  }
+
+  const handleFillCell = () => {}
+
+  const handleFillRow = () => {}
+
+  const handleFillCol = () => {}
+
   return (
     <div>
       <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} />
       <div className="flex flex-row justify-between">
-            <button className={btnClassName}>Reset Board</button>
+            <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName}>Fill Cell</button>
             <button className={btnClassName}>Fill Row</button>
             <button className={btnClassName}>Fill Column</button>
