@@ -19,17 +19,18 @@ function Game() {
     setBoard(sudoku.generateGameBoard("easy"));
   }, [sudoku]);
 
-  const updateCell = (row: number, col: number, num: number|undefined) => {
+  const updateCell = (row: number, col: number, num: number | undefined) => {
     // Update Sudoku instance
     sudoku.updateCell(row, col, num);
-    // Update local state
-    const newBoard = board.map((r, rowIndex) =>
-      r.map((c, colIndex) =>
-        rowIndex === row && colIndex === col ? num : c
+    // Update local state using the functional form of setState
+    setBoard((prevBoard) =>
+      prevBoard.map((r, rowIndex) =>
+        r.map((c, colIndex) =>
+          rowIndex === row && colIndex === col ? num : c
+        )
       )
     );
-    setBoard(newBoard);
-  }
+  };
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (selected[0] !== undefined && selected[1] !== undefined) {
@@ -59,9 +60,9 @@ function Game() {
   }, [handleKeyDown]);
 
   const handleResetBoard = () => {
-    sudoku.gameBoard = sudoku.ogGameBoard;
+    sudoku.resetGameBoard();
     setBoard(sudoku.gameBoard);
-  }
+  };
 
   const handleClearCell = () => {
     updateCell(selected[0], selected[1], undefined)
@@ -71,9 +72,17 @@ function Game() {
     updateCell(selected[0], selected[1], sudoku.board[selected[0]][selected[1]])
   }
 
-  const handleFillRow = () => {}
-
-  const handleFillCol = () => {}
+  const handleFillRow = () => {
+    for (var i=0; i < 9; i++) {
+        updateCell(selected[0], i, sudoku.board[selected[0]][i])
+    }
+  }
+ 
+  const handleFillCol = () => {
+    for (var i=0; i < 9; i++) {
+        updateCell(i, selected[1], sudoku.board[i][selected[0]])
+    }
+  }
 
   return (
     <div>
@@ -82,8 +91,8 @@ function Game() {
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>
             <button className={btnClassName} onMouseUp={handleFillCell}>Fill Cell</button>
-            <button className={btnClassName}>Fill Row</button>
-            <button className={btnClassName}>Fill Column</button>
+            <button className={btnClassName} onMouseUp={handleFillRow}>Fill Row</button>
+            <button className={btnClassName} onMouseUp={handleFillCol}>Fill Column</button>
             <div>
                 <Switch
                     checked={showErrors}

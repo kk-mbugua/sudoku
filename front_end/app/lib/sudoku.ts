@@ -110,6 +110,11 @@ class Sudoku {
         return this.gameBoard;
     }
 
+    resetGameBoard(): BoardType {
+        this.gameBoard = this.ogGameBoard;
+        return this.gameBoard
+    }
+
     isValidBoard(board: BoardType = this.gameBoard): boolean {
         const boxes: {[key: string]: Set<number|undefined>} = {};
         for (let k = 0; k < 3; k++) {
