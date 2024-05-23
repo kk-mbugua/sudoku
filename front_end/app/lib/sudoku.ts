@@ -169,6 +169,10 @@ class Sudoku {
         return true;
     }
 
+    isCorrectValue(val: number|undefined, row: number, col: number): boolean {
+        return this.board[row][col] === val;
+    }
+
     possibleInputs(row: number, col: number): number[] {
         const res = []
         for (var val = 1; val<=9; val++) {

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Sudoku from "../lib/sudoku";
 import Board from "./board";
-import { BoardType, Difficulty } from "../lib/definitions";
+import { BoardType } from "../lib/definitions";
 import { generateEmptyBoard } from "../lib/utils";
 import { Switch } from "@headlessui/react";
 
@@ -86,7 +86,7 @@ function Game() {
 
   return (
     <div>
-      <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} />
+      <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
       <div className="flex flex-row justify-between">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>

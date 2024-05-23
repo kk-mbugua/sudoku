@@ -5,10 +5,11 @@ type CellProps = {
     children: React.ReactNode;
     isPreFilled: boolean;
     selected: boolean;
+    hasError: boolean;
     onClick: () => void;
 };
 
-function Cell({children, isPreFilled, selected=false, onClick}: CellProps) {
+function Cell({children, isPreFilled, selected=false, hasError, onClick}: CellProps) {
     return (
         <div 
             // className="cell flex flex-row justify-center items-center"
@@ -19,6 +20,7 @@ function Cell({children, isPreFilled, selected=false, onClick}: CellProps) {
                     "text-red-300 border-2 border-blue-700 bg-zinc-950": isPreFilled && selected,
                     "text-red-600 border border-white bg-zinc-900": !isPreFilled && !selected,
                     "text-blue-700 border-2 border-blue-700 bg-zinc-700": !isPreFilled && selected,
+                    "border-red-600": hasError
                 }
             )}
             onClick={onClick}
