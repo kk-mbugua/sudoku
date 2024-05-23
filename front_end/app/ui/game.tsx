@@ -6,6 +6,7 @@ import Board from "./board";
 import { BoardType } from "../lib/definitions";
 import { generateEmptyBoard } from "../lib/utils";
 import { Switch } from "@headlessui/react";
+import GameOptions from "./gameoptions";
 
 const btnClassName = "rounded-lg bg-cyan-700 p-3 mx-4";
 
@@ -86,8 +87,9 @@ function Game() {
 
   return (
     <div>
-      <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
-      <div className="flex flex-row justify-between">
+        <GameOptions/>
+        <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
+        <div className="flex flex-row justify-between">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>
             <button className={btnClassName} onMouseUp={handleFillCell}>Fill Cell</button>
@@ -103,7 +105,7 @@ function Game() {
                 </Switch>
                 Show Errors
             </div>
-      </div>
+        </div>
     </div>
   );
 }
