@@ -1,12 +1,13 @@
 "use client";
 
+import { Difficulty } from '../lib/definitions';
 import { Fragment } from 'react'
 import { Menu, MenuItems, MenuItem, MenuButton, Transition } from '@headlessui/react'
 import { ChevronDownIcon, ServerStackIcon } from '@heroicons/react/20/solid'
 
 const menuItemClassName = "flex flex-row justify-start items-center";
 
-function GameOptions() {
+function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void }) {
 
     return (
         <div>
@@ -35,6 +36,7 @@ function GameOptions() {
                                     type="button"
                                     className='text-gray-700block w-full px-4 py-2 text-left text-sm'
                                     style={{"color": "black"}}
+                                    onClick={() => newGame("easy")}
                                 >
                                     Easy
                                 </button>
@@ -48,6 +50,7 @@ function GameOptions() {
                                     type="button"
                                     className='text-gray-700block w-full px-4 py-2 text-left text-sm'
                                     style={{"color": "black"}}
+                                    onClick={() => newGame("medium")}
                                 >
                                     Medium
                                 </button>
@@ -61,6 +64,7 @@ function GameOptions() {
                                     type="button"
                                     className='text-gray-700block w-full px-4 py-2 text-left text-sm'
                                     style={{"color": "black"}}
+                                    onClick={() => newGame("hard")}
                                 >
                                     Hard
                                 </button>

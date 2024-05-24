@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Sudoku from "../lib/sudoku";
 import Board from "./board";
-import { BoardType } from "../lib/definitions";
+import { BoardType, Difficulty } from "../lib/definitions";
 import { generateEmptyBoard } from "../lib/utils";
 import { Switch } from "@headlessui/react";
 import GameOptions from "./gameoptions";
@@ -11,14 +11,23 @@ import GameOptions from "./gameoptions";
 const btnClassName = "rounded-lg bg-cyan-700 p-3 mx-4";
 
 function Game() {
-  const [sudoku] = useState<Sudoku>(new Sudoku());
+  const [sudoku, setSudoku] = useState<Sudoku>(new Sudoku());
   const [board, setBoard] = useState<BoardType>(generateEmptyBoard());
   const [selected, setSelected] = useState<[number, number]>([-1, -1]);
   const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
+    console.log("setting new board")
     setBoard(sudoku.generateGameBoard("easy"));
   }, [sudoku]);
+
+  const newGame = (difficulty: Difficulty = "medium", board?: BoardType) => {
+    if (board) var sudoku = new Sudoku(board);
+    else sudoku = new Sudoku;
+
+    const newBoard = sudoku.generateGameBoard(difficulty);
+    setBoard(sudoku.generateGameBoard(difficulty));
+  };
 
   const updateCell = (row: number, col: number, num: number | undefined) => {
     // Update Sudoku instance
@@ -87,7 +96,7 @@ function Game() {
 
   return (
     <div>
-        <GameOptions/>
+        <GameOptions newGame={newGame}/>
         <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
         <div className="flex flex-row justify-between">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
