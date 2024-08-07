@@ -5,10 +5,10 @@ type CellProps = {
     isPreFilled: boolean;
     selected: boolean;
     hasError: boolean;
-    onClick: () => void;
+    onSelect: () => void;
 };
 
-function Cell({children, isPreFilled, selected=false, hasError, onClick}: CellProps) {
+function Cell({children, isPreFilled, selected=false, hasError, onSelect}: CellProps) {
     return (
         <div 
             className={clsx(
@@ -21,7 +21,7 @@ function Cell({children, isPreFilled, selected=false, hasError, onClick}: CellPr
                     "border-red-600": hasError
                 }
             )}
-            onClick={onClick}
+            onClick={onSelect}
         >
             {children ? children : <span>&nbsp;</span>}
         </div>

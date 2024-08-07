@@ -13,7 +13,7 @@ const btnClassName = "rounded-lg bg-cyan-700 p-3 mx-4";
 function Game() {
   const [sudoku, setSudoku] = useState<Sudoku>(new Sudoku());
   const [board, setBoard] = useState<BoardType>(generateEmptyBoard());
-  const [selected, setSelected] = useState<[number, number]>([-1, -1]);
+  const [selected, setSelected] = useState<[number, number]>([0, 0]);
   const [showErrors, setShowErrors] = useState(false);
   const [solved, setSolved] = useState(false);
   
@@ -42,12 +42,8 @@ function Game() {
   }, [board]);
 
   const newGame = (difficulty: Difficulty = "medium", board?: BoardType) => {
-    if (board) var sudoku = new Sudoku(board);
-    else sudoku = new Sudoku;
-
-    setBoard(sudoku.generateGameBoard(difficulty));
+    setSudoku(new Sudoku())
     setSolved(false);
-    console.log('solved:', solved)
   };
 
   const updateCell = (row: number, col: number, num: number | undefined) => {
@@ -67,30 +63,28 @@ function Game() {
   };
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (selected[0] !== undefined && selected[1] !== undefined) {
-      const row = selected[0];
-      const col = selected[1];
-      const key = event.key;
-
-      if (key >= '1' && key <= '9') {
-        const num = parseInt(key, 10);
-        // Check if the cell is not part of the original game board
-        if (sudoku.ogGameBoard[row][col] === undefined) {
-          updateCell(row,col, num)
-        }
+    const row = selected[0];
+    const col = selected[1];
+    const key = event.key;
+  
+    if (key >= '1' && key <= '9') {
+      const num = parseInt(key, 10);
+      // Check if the cell is not part of the original game board
+      if (sudoku.ogGameBoard[row][col] === undefined) {
+        updateCell(row, col, num);
       }
-      if (key === "Backspace") {
-        if (sudoku.ogGameBoard[row][col] === undefined) {
-          updateCell(row,col, undefined)
-        }
-      }
-      
     }
-  }, [selected, board, sudoku]);
+    if (key === "Backspace") {
+      if (sudoku.ogGameBoard[row][col] === undefined) {
+        updateCell(row, col, undefined);
+      }
+    }
+  }, [selected, sudoku, updateCell]);
+  
 
-  const handleCellClick = useCallback((row: number, col: number) => {
+  const handleCellClick = (row: number, col: number) => {
     setSelected([row, col]);
-  }, []);
+  }
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -114,7 +108,6 @@ function Game() {
 
   const handleFillRow = () => {
     for (var i=0; i < sudoku.size; i++) {
-        console.log(selected, i)
         updateCell(selected[0], i, sudoku.board[selected[0]][i])
     }
   }

@@ -23,7 +23,7 @@ function Board({ sudoku, board, selected, showErrors, onCellClick}: BoardProps) 
             <Cell
                 isPreFilled={isPreFilled(rowIndex, colIndex)}
                 selected={rowIndex === selected[0] && colIndex === selected[1]}
-                onClick={() => onCellClick(rowIndex, colIndex)}
+                onSelect={() => onCellClick(rowIndex, colIndex)}
                 hasError={hasError(rowIndex, colIndex)}
                 key={`${rowIndex}-${colIndex}`}
             >
