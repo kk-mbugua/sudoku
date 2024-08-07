@@ -15,7 +15,7 @@ function Game() {
   const [board, setBoard] = useState<BoardType>(generateEmptyBoard());
   const [selected, setSelected] = useState<[number, number]>([-1, -1]);
   const [showErrors, setShowErrors] = useState(false);
-
+  
   useEffect(() => {
     console.log("setting new board")
     setBoard(sudoku.generateGameBoard("easy"));
@@ -48,6 +48,8 @@ function Game() {
       const col = selected[1];
       const key = event.key;
 
+      console.log('key:', key)
+
       if (key >= '1' && key <= '9') {
         const num = parseInt(key, 10);
         // Check if the cell is not part of the original game board
@@ -55,6 +57,12 @@ function Game() {
           updateCell(row,col, num)
         }
       }
+      if (key === "Backspace") {
+        if (sudoku.ogGameBoard[row][col] === undefined) {
+          updateCell(row,col, undefined)
+        }
+      }
+      
     }
   }, [selected, board, sudoku]);
 

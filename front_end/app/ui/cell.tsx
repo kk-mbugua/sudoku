@@ -1,4 +1,3 @@
-
 import clsx from 'clsx';
 
 type CellProps = {
@@ -12,14 +11,13 @@ type CellProps = {
 function Cell({children, isPreFilled, selected=false, hasError, onClick}: CellProps) {
     return (
         <div 
-            // className="cell flex flex-row justify-center items-center"
             className={clsx(
-                "cell flex flex-row justify-center items-center w-12 h-12  border-solid",
+                "cell flex flex-row justify-center items-center w-12 h-12 border-solid",
                 {
-                    "text-red-300 border border-white bg-zinc-950": isPreFilled && !selected,
-                    "text-red-300 border-2 border-blue-700 bg-zinc-950": isPreFilled && selected,
-                    "text-red-600 border border-white bg-zinc-900": !isPreFilled && !selected,
-                    "text-blue-700 border-2 border-blue-700 bg-zinc-700": !isPreFilled && selected,
+                    "text-gray-800 border-gray-300 bg-white": !isPreFilled && !selected, // Default cell style
+                    "text-gray-800 border-gray-300 bg-gray-200": isPreFilled && !selected, // Pre-filled cell style
+                    "text-gray-800 border-2 border-blue-500 bg-gray-200": isPreFilled && selected, // Pre-filled selected cell
+                    "text-gray-800 border-2 border-blue-500 bg-white": !isPreFilled && selected, // Selected cell style
                     "border-red-600": hasError
                 }
             )}
@@ -30,4 +28,4 @@ function Cell({children, isPreFilled, selected=false, hasError, onClick}: CellPr
     )
 }
 
-export default Cell
+export default Cell;
