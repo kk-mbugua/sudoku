@@ -113,4 +113,4 @@ if __name__ == "__main__":
         else:
           # TODO: handle the error
           print("No Sudoku grid detected")
-
+       
