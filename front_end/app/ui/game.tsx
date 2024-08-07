@@ -45,7 +45,6 @@ function Game() {
     if (board) var sudoku = new Sudoku(board);
     else sudoku = new Sudoku;
 
-    const newBoard = sudoku.generateGameBoard(difficulty);
     setBoard(sudoku.generateGameBoard(difficulty));
     setSolved(false);
     console.log('solved:', solved)
@@ -114,14 +113,15 @@ function Game() {
   }
 
   const handleFillRow = () => {
-    for (var i=0; i < 9; i++) {
+    for (var i=0; i < sudoku.size; i++) {
+        console.log(selected, i)
         updateCell(selected[0], i, sudoku.board[selected[0]][i])
     }
   }
  
   const handleFillCol = () => {
     for (var i=0; i < 9; i++) {
-        updateCell(i, selected[1], sudoku.board[i][selected[0]])
+        updateCell(i, selected[1], sudoku.board[i][selected[1]])
     }
   }
 
