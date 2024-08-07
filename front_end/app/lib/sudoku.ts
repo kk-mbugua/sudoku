@@ -181,6 +181,14 @@ class Sudoku {
         return res;
     }
 
+    checkWin(): boolean {
+        for (var row = 0; row<this.size; row++) {
+            for (var col = 0; col<this.size; col++) {
+                if (this.gameBoard[row][col] !== this.board[row][col]) return false;
+            }
+        }
+        return true
+    }
 }
 
 export default Sudoku

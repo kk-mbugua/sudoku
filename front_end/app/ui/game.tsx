@@ -15,11 +15,31 @@ function Game() {
   const [board, setBoard] = useState<BoardType>(generateEmptyBoard());
   const [selected, setSelected] = useState<[number, number]>([-1, -1]);
   const [showErrors, setShowErrors] = useState(false);
+  const [solved, setSolved] = useState(false);
   
   useEffect(() => {
     console.log("setting new board")
     setBoard(sudoku.generateGameBoard("easy"));
   }, [sudoku]);
+
+  const filledGameBoard = () => {
+    for (let row=0; row<sudoku.size; row++) {
+      for (let col=0; col<sudoku.size; col++) {
+        if (sudoku.gameBoard[row][col] ===  undefined) return false;
+      }
+    }
+    return true;
+  }
+
+  useEffect(() => {
+    if (!filledGameBoard()) {
+      return
+    }
+    const isSolved = sudoku.checkWin();
+    if (isSolved) {
+      setSolved(isSolved);
+    }
+  }, [board]);
 
   const newGame = (difficulty: Difficulty = "medium", board?: BoardType) => {
     if (board) var sudoku = new Sudoku(board);
@@ -27,9 +47,14 @@ function Game() {
 
     const newBoard = sudoku.generateGameBoard(difficulty);
     setBoard(sudoku.generateGameBoard(difficulty));
+    setSolved(false);
+    console.log('solved:', solved)
   };
 
   const updateCell = (row: number, col: number, num: number | undefined) => {
+    if (solved) {
+      return
+    }
     // Update Sudoku instance
     sudoku.updateCell(row, col, num);
     // Update local state using the functional form of setState
@@ -47,8 +72,6 @@ function Game() {
       const row = selected[0];
       const col = selected[1];
       const key = event.key;
-
-      console.log('key:', key)
 
       if (key >= '1' && key <= '9') {
         const num = parseInt(key, 10);
@@ -106,6 +129,8 @@ function Game() {
     <div>
         <GameOptions newGame={newGame}/>
         <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
+        {(filledGameBoard() && ! solved) && <div className="text-red-700">There are some errors on the board</div>}
+        {solved && <div className="text-emerald-600">Congratulations! Board is solved</div>}
         <div className="flex flex-row justify-between">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>
