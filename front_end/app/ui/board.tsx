@@ -22,13 +22,14 @@ function Board({ sudoku, board, selected, showErrors, onCellClick}: BoardProps) 
         return (
             <Cell
                 isPreFilled={isPreFilled(rowIndex, colIndex)}
-                selected={rowIndex === selected[0] && colIndex === selected[1]}
-                onSelect={() => onCellClick(rowIndex, colIndex)}
+                isSelected={rowIndex === selected[0] && colIndex === selected[1]}
+                onCellClick={() => onCellClick(rowIndex, colIndex)}
                 hasError={hasError(rowIndex, colIndex)}
                 key={`${rowIndex}-${colIndex}`}
             >
                 {col}
             </Cell>
+
         );
         });
         return (

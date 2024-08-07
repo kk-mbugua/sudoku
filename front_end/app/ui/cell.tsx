@@ -3,27 +3,27 @@ import clsx from 'clsx';
 type CellProps = {
     children: React.ReactNode;
     isPreFilled: boolean;
-    selected: boolean;
+    isSelected: boolean;
     hasError: boolean;
-    onSelect: () => void;
+    onCellClick: () => void;
 };
 
-function Cell({children, isPreFilled, selected=false, hasError, onSelect}: CellProps) {
+function Cell({children, isPreFilled, isSelected=false, hasError, onCellClick}: CellProps) {
     return (
         <div 
             className={clsx(
-                "cell flex flex-row justify-center items-center w-12 h-12 border-solid",
+                "cell flex flex-row justify-center items-center w-12 h-12 border-solid text-gray-800",
                 {
-                    "text-gray-800 border-gray-300 bg-white": !isPreFilled && !selected, // Default cell style
-                    "text-gray-800 border-gray-300 bg-gray-200": isPreFilled && !selected, // Pre-filled cell style
-                    "text-gray-800 border-2 border-blue-500 bg-gray-200": isPreFilled && selected, // Pre-filled selected cell
-                    "text-gray-800 border-2 border-blue-500 bg-white": !isPreFilled && selected, // Selected cell style
-                    "border-red-600": hasError
+                    "bg-gray-200": isPreFilled, // Pre-filled cell style
+                    "bg-white": !isPreFilled, // User-filled cell style
+                    "border-blue-500 border-2 text-blue-700": isSelected, // Selected cell style
+                    "border-red-600 border-2": hasError, // cell with error
                 }
             )}
-            onClick={onSelect}
+            onClick={onCellClick}
         >
             {children ? children : <span>&nbsp;</span>}
+
         </div>
     )
 }
