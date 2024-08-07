@@ -8,7 +8,7 @@ import { generateEmptyBoard } from "../lib/utils";
 import { Switch } from "@headlessui/react";
 import GameOptions from "./gameoptions";
 
-const btnClassName = "rounded-lg bg-cyan-700 p-3 mx-4";
+const btnClassName = "rounded-lg bg-secondary p-3 mx-4 text-white";
 
 function Game() {
   const [sudoku, setSudoku] = useState<Sudoku>(new Sudoku());
@@ -124,17 +124,17 @@ function Game() {
         <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
         {(filledGameBoard() && ! solved) && <div className="text-red-700">There are some errors on the board</div>}
         {solved && <div className="text-emerald-600">Congratulations! Board is solved</div>}
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between items-center">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>
             <button className={btnClassName} onMouseUp={handleFillCell}>Fill Cell</button>
             <button className={btnClassName} onMouseUp={handleFillRow}>Fill Row</button>
             <button className={btnClassName} onMouseUp={handleFillCol}>Fill Column</button>
-            <div>
+            <div className="bg-secondary text-white">
                 <Switch
                     checked={showErrors}
                     onChange={setShowErrors}
-                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
+                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-secondary"
                 >
                     <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
                 </Switch>

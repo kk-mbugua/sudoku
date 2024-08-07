@@ -10,10 +10,10 @@ const menuItemClassName = "flex flex-row justify-start items-center";
 function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void }) {
 
     return (
-        <div>
-            <Menu as="div" className="relative inline-block text-left">
+        <div className=''>
+            <Menu as="div" className="relative inline-block text-left pr-10">
             <div>
-                <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 bg-secondary">
                     New Game
                 <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </MenuButton>
@@ -34,7 +34,7 @@ function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void })
                                 <ServerStackIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 <button
                                     type="button"
-                                    className='text-gray-700block w-full px-4 py-2 text-left text-sm'
+                                    className='text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-primary'
                                     style={{"color": "black"}}
                                     onClick={() => newGame("easy")}
                                 >
@@ -48,7 +48,7 @@ function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void })
                                 <ServerStackIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 <button
                                     type="button"
-                                    className='text-gray-700block w-full px-4 py-2 text-left text-sm'
+                                    className='text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-primary'
                                     style={{"color": "black"}}
                                     onClick={() => newGame("medium")}
                                 >
@@ -62,7 +62,7 @@ function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void })
                                 <ServerStackIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 <button
                                     type="button"
-                                    className='text-gray-700block w-full px-4 py-2 text-left text-sm'
+                                    className='text-gray-700block w-full px-4 py-2 text-left text-sm hover:bg-primary'
                                     style={{"color": "black"}}
                                     onClick={() => newGame("hard")}
                                 >
