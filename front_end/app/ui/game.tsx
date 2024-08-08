@@ -15,6 +15,7 @@ function Game() {
   const [board, setBoard] = useState<BoardType>(generateEmptyBoard());
   const [selected, setSelected] = useState<[number, number]>([0, 0]);
   const [showErrors, setShowErrors] = useState(false);
+  const [showHints, setShowHints] = useState(false);
   const [solved, setSolved] = useState(false);
   const [isCreatedBoard,setIsCreatedBoard] = useState(false);
   const [notSolvable, setNotSolvable] = useState(false)
@@ -183,6 +184,17 @@ function Game() {
                     <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
                 </Switch>
                 <span>Show Errors</span>
+            </div>
+            <div className="bg-neutral-400 text-white p-2 rounded-lg mx-4 flex flex-row space-around justify-between items-center">
+                <Switch
+                    checked={showHints}
+                    onChange={setShowHints}
+                    disabled={true}
+                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-cyan-600 mr-2"
+                >
+                    <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
+                </Switch>
+                <span>Show Hints</span>
             </div>
         </div>
     </div>

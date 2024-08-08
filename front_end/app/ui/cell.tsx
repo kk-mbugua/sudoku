@@ -16,7 +16,7 @@ function Cell({children, isPreFilled, isSelected=false, hasError, onCellClick}: 
                 {
                     "bg-gray-200": isPreFilled, // Pre-filled cell style
                     "bg-white": !isPreFilled, // User-filled cell style
-                    "border-blue-500 border-2 text-blue-700": isSelected, // Selected cell style
+                    "border-secondary border-2 text-secondary": isSelected, // Selected cell style
                     "border-red-600 border": hasError, // cell with error
                 }
             )}

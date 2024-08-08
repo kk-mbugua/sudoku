@@ -11,7 +11,6 @@ class Sudoku {
     isValid: boolean | undefined;
     difficulty: Difficulty = "easy"
 
-
     constructor(gameBoard?: BoardType) {
         this.board = generateEmptyBoard();
         this.gameBoard = gameBoard ? gameBoard : generateEmptyBoard();   
@@ -26,12 +25,12 @@ class Sudoku {
     
     solveBoard(row:number = 0, col:number = 0):boolean {
         // Check if we have reached the end of the matrix
-        if (row >= 9) {
+        if (row >= this.size) {
             return true;
         }
 
         // Move to the next row if we have reached the end of the current row
-        if (col >= 9) {
+        if (col >= this.size) {
             return this.solveBoard(row+1, 0);
         }
 
@@ -41,7 +40,7 @@ class Sudoku {
         }
 
         // Try filling the current cell with a valid value
-        for (let num = 1; num <= 9; num++) {
+        for (let num = 1; num <= this.size; num++) {
             if (this.isValidInput(num, row, col)) {
                 this.board[row][col] = num;
                 if (this.solveBoard(row, col + 1)) {
@@ -89,7 +88,13 @@ class Sudoku {
     
     generateGameBoard(difficulty?: Difficulty) {
         if (this.gameBoardSet) return this.gameBoard;
-        this.solveBoard()
+        // Create a shuffled array of numbers from 1 to 9
+        const shuffledNumbers = Array.from({ length: 9 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
+        // Initialize the first row with the shuffled numbers
+        this.board[0] = shuffledNumbers;
+        // Complete the rest of the board using the solveBoard function
+        this.solveBoard();
+
         this.gameBoard = this.board.map(row => [...row]);
         switch (difficulty) {
             case "easy":
@@ -123,10 +128,10 @@ class Sudoku {
             }
         }
     
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < this.size; i++) {
             const row_set = new Set();
             const col_set = new Set();
-            for (let j = 0; j < 9; j++) {
+            for (let j = 0; j < this.size; j++) {
                 const row_val = board[i][j];
                 const col_val = board[j][i];
                 const k = Math.floor(i / 3);
@@ -152,7 +157,7 @@ class Sudoku {
     }
 
     isValidInputCol(val: number, col:number): boolean {
-        for (var i=0; i < 9; i++) {
+        for (var i=0; i < this.size; i++) {
             if (this.board[i][col] === val) return false;
         }
         return true;
@@ -175,7 +180,7 @@ class Sudoku {
 
     possibleInputs(row: number, col: number): number[] {
         const res = []
-        for (var val = 1; val<=9; val++) {
+        for (var val = 1; val<=this.size; val++) {
             if (this.isValidInput(val, row, col)) res.push(val)
         }
         return res;
