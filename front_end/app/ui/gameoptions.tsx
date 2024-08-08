@@ -106,7 +106,7 @@ function GameOptions({ newGame, createBoard }: GameOptionsProps) {
                                         type="button"
                                         className='text-gray-700block w-full px-4 py-2 text-left text-sm'
                                         style={{"color": "black"}}
-                                        onClick={createBoard}
+                                        onClick={()=> createBoard()}
                                     >
                                         Set Board
                                     </button>

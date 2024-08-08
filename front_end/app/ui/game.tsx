@@ -16,7 +16,8 @@ function Game() {
   const [selected, setSelected] = useState<[number, number]>([0, 0]);
   const [showErrors, setShowErrors] = useState(false);
   const [solved, setSolved] = useState(false);
-  const [showCreateOptions,setShowCreateOptions] = useState(false);
+  const [isCreatedBoard,setIsCreatedBoard] = useState(false);
+  const [notSolvable, setNotSolvable] = useState(false)
   
   useEffect(() => {
     console.log("setting new board")
@@ -43,30 +44,41 @@ function Game() {
   }, [board]);
 
   const newGame = (difficulty: Difficulty = "medium", board?: BoardType) => {
-    const newSudoku = new Sudoku()
-    const newBoard = newSudoku.generateGameBoard(difficulty)
-    setSudoku(newSudoku)
-    setBoard(newBoard)
-    setSolved(false);
-    setShowCreateOptions(false);
+    if (board) { // create board after user input
+      var newSudoku = new Sudoku(board);
+      var newBoard = board;
+      const solvable = newSudoku.solveBoard();
+      if (!solvable) {
+        setNotSolvable(true);
+        setIsCreatedBoard(true);
+      }
+    } else { // create new game board from scratch
+      var newSudoku = new Sudoku();
+      var newBoard = newSudoku.generateGameBoard(difficulty);
+      setIsCreatedBoard(false);
+      setSolved(false);
+    }
+      setSudoku(newSudoku);
+      setBoard(newBoard);
   };
 
-  const createBoard = () => {
-    console.log("Create Board Clicked")
+  const createBoard = (board?: BoardType) => {
     const newSudoku = new Sudoku()
-    const newBoard = generateEmptyBoard();
+    var newBoard = generateEmptyBoard();
+    if (board) {newBoard = board;}
     setSudoku(newSudoku)
     setBoard(newBoard)
     setSolved(false);
-    setShowCreateOptions(true);
+    setIsCreatedBoard(true);
   }
 
   const handleSaveBoard = () => {
-    console.log("Save Board Clicked")
+    newGame("medium", board)
   }
 
+  //TODO: shift the board to edit mode andtand create a new board from outcome
   const handleEditBoard = () => {
-    console.log("Edit Board Clicked")
+    createBoard(board)
   }
 
   const updateCell = (row: number, col: number, num: number | undefined) => {
@@ -147,7 +159,8 @@ function Game() {
         <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
         {(filledGameBoard() && ! solved) && <div className="text-red-700">There are some errors on the board</div>}
         {solved && <div className="text-emerald-600">Congratulations! Board is solved</div>}
-        {showCreateOptions && 
+        {notSolvable && <div className="text-red-700">This board is not solvable</div>}
+        {isCreatedBoard && 
           <div>
             <button className={btnClassName} onMouseUp={handleSaveBoard}>Save Board</button>
             <button className={btnClassName} onMouseUp={handleEditBoard}>Edit Board</button>
