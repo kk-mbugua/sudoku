@@ -1,33 +1,33 @@
-
 import clsx from 'clsx';
 
 type CellProps = {
     children: React.ReactNode;
     isPreFilled: boolean;
-    selected: boolean;
+    isSelected: boolean;
     hasError: boolean;
-    onClick: () => void;
+    isHint: boolean;
+    onCellClick: () => void;
 };
 
-function Cell({children, isPreFilled, selected=false, hasError, onClick}: CellProps) {
+function Cell({children, isPreFilled, isSelected=false, hasError, isHint=false, onCellClick}: CellProps) {
     return (
         <div 
-            // className="cell flex flex-row justify-center items-center"
             className={clsx(
-                "cell flex flex-row justify-center items-center w-12 h-12  border-solid",
+                "cell flex flex-row justify-center items-center w-12 h-12 border-solid text-gray-800",
                 {
-                    "text-red-300 border border-white bg-zinc-950": isPreFilled && !selected,
-                    "text-red-300 border-2 border-blue-700 bg-zinc-950": isPreFilled && selected,
-                    "text-red-600 border border-white bg-zinc-900": !isPreFilled && !selected,
-                    "text-blue-700 border-2 border-blue-700 bg-zinc-700": !isPreFilled && selected,
-                    "border-red-600": hasError
+                    "bg-gray-200": isPreFilled, // Pre-filled cell style
+                    "bg-white": !isPreFilled, // User-filled cell style
+                    "border-secondary border-2 text-secondary": isSelected, // Selected cell style
+                    "border-red-600 border": hasError, // cell with error
+                    "text-red-600": isHint, //When cell is hint for other cell
                 }
             )}
-            onClick={onClick}
+            onClick={onCellClick}
         >
             {children ? children : <span>&nbsp;</span>}
+
         </div>
     )
 }
 
-export default Cell
+export default Cell;

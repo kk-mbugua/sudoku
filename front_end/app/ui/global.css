@@ -20,13 +20,9 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: #1f2937;
+  background: #F0F0F0;
+  
 }
 
 @layer utilities {
@@ -40,7 +36,7 @@ body {
   block-size: fit-content;
   margin: 20px;
   padding: 20px;
-  border: 1px inset red;
+  border: 1px inset #D3D3D3;
 }
 
 .row {
@@ -48,9 +44,9 @@ body {
 }
 
 .row:nth-child(3), .row:nth-child(6) {
-  border-bottom: 5px solid white;
+  border-bottom: 5px solid #D3D3D3;
 }
 
 .cell:nth-child(3n):not(:last-child) {
-  border-right: 5px solid white;
+  border-right: 5px solid #D3D3D3;
 }
