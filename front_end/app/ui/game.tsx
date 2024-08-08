@@ -16,11 +16,12 @@ function Game() {
   const [selected, setSelected] = useState<[number, number]>([0, 0]);
   const [showErrors, setShowErrors] = useState(false);
   const [solved, setSolved] = useState(false);
+  const [showCreateOptions,setShowCreateOptions] = useState(false);
   
   useEffect(() => {
     console.log("setting new board")
-    setBoard(sudoku.generateGameBoard("easy"));
-  }, [sudoku]);
+    newGame("easy")
+  }, []);
 
   const filledGameBoard = () => {
     for (let row=0; row<sudoku.size; row++) {
@@ -42,9 +43,31 @@ function Game() {
   }, [board]);
 
   const newGame = (difficulty: Difficulty = "medium", board?: BoardType) => {
-    setSudoku(new Sudoku())
+    const newSudoku = new Sudoku()
+    const newBoard = newSudoku.generateGameBoard(difficulty)
+    setSudoku(newSudoku)
+    setBoard(newBoard)
     setSolved(false);
+    setShowCreateOptions(false);
   };
+
+  const createBoard = () => {
+    console.log("Create Board Clicked")
+    const newSudoku = new Sudoku()
+    const newBoard = generateEmptyBoard();
+    setSudoku(newSudoku)
+    setBoard(newBoard)
+    setSolved(false);
+    setShowCreateOptions(true);
+  }
+
+  const handleSaveBoard = () => {
+    console.log("Save Board Clicked")
+  }
+
+  const handleEditBoard = () => {
+    console.log("Edit Board Clicked")
+  }
 
   const updateCell = (row: number, col: number, num: number | undefined) => {
     if (solved) {
@@ -67,7 +90,7 @@ function Game() {
     const col = selected[1];
     const key = event.key;
   
-    if (key >= '1' && key <= '9') {
+    if (key >= '1' && key <= sudoku.size.toString()) {
       const num = parseInt(key, 10);
       // Check if the cell is not part of the original game board
       if (sudoku.ogGameBoard[row][col] === undefined) {
@@ -113,32 +136,37 @@ function Game() {
   }
  
   const handleFillCol = () => {
-    for (var i=0; i < 9; i++) {
+    for (var i=0; i < sudoku.size; i++) {
         updateCell(i, selected[1], sudoku.board[i][selected[1]])
     }
   }
 
   return (
     <div>
-        <GameOptions newGame={newGame}/>
+        <GameOptions newGame={newGame} createBoard={createBoard}/>
         <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
         {(filledGameBoard() && ! solved) && <div className="text-red-700">There are some errors on the board</div>}
         {solved && <div className="text-emerald-600">Congratulations! Board is solved</div>}
+        {showCreateOptions && 
+          <div>
+            <button className={btnClassName} onMouseUp={handleSaveBoard}>Save Board</button>
+            <button className={btnClassName} onMouseUp={handleEditBoard}>Edit Board</button>
+          </div>}
         <div className="flex flex-row justify-between items-center">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>
             <button className={btnClassName} onMouseUp={handleFillCell}>Fill Cell</button>
             <button className={btnClassName} onMouseUp={handleFillRow}>Fill Row</button>
             <button className={btnClassName} onMouseUp={handleFillCol}>Fill Column</button>
-            <div className="bg-secondary text-white">
+            <div className="bg-secondary text-white p-2 rounded-lg mx-4 flex flex-row space-around justify-between items-center">
                 <Switch
                     checked={showErrors}
                     onChange={setShowErrors}
-                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-secondary"
+                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-cyan-600 mr-2"
                 >
                     <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
                 </Switch>
-                Show Errors
+                <span>Show Errors</span>
             </div>
         </div>
     </div>

@@ -7,7 +7,11 @@ import { ChevronDownIcon, ServerStackIcon } from '@heroicons/react/20/solid'
 
 const menuItemClassName = "flex flex-row justify-start items-center";
 
-function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void }) {
+type GameOptionsProps = {
+    newGame: (difficulty: Difficulty) => void,
+    createBoard: () => void
+}
+function GameOptions({ newGame, createBoard }: GameOptionsProps) {
 
     return (
         <div className=''>
@@ -102,6 +106,7 @@ function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void })
                                         type="button"
                                         className='text-gray-700block w-full px-4 py-2 text-left text-sm'
                                         style={{"color": "black"}}
+                                        onClick={createBoard}
                                     >
                                         Set Board
                                     </button>
@@ -123,7 +128,6 @@ function GameOptions({ newGame }: { newGame: (difficulty: Difficulty) => void })
                             </MenuItem>
                         </div>
                     </MenuItems>
-
                 </Transition>
             </Menu>
         </div>
