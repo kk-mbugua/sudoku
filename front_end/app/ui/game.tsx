@@ -153,7 +153,6 @@ function Game() {
         updateCell(i, selected[1], sudoku.board[i][selected[1]])
     }
   }
-
   return (
     <div>
         <div className="flex flex-row">
@@ -165,7 +164,7 @@ function Game() {
             </div>
           }
         </div>
-        <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
+        <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors} showHints={showHints}/>
         {(filledGameBoard() && ! solved) && <div className="text-red-700">There are some errors on the board</div>}
         {solved && <div className="text-emerald-600">Congratulations! Board is solved</div>}
         {notSolvable && <div className="text-red-700">This board is not solvable</div>}
@@ -185,11 +184,11 @@ function Game() {
                 </Switch>
                 <span>Show Errors</span>
             </div>
-            <div className="bg-neutral-400 text-white p-2 rounded-lg mx-4 flex flex-row space-around justify-between items-center">
+            <div className="bg-secondary text-white p-2 rounded-lg mx-4 flex flex-row space-around justify-between items-center">
                 <Switch
                     checked={showHints}
                     onChange={setShowHints}
-                    disabled={true}
+                    // disabled={true}
                     className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-cyan-600 mr-2"
                 >
                     <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />

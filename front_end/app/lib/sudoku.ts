@@ -147,32 +147,50 @@ class Sudoku {
         return true;
     }
     
-
     isValidInput(val: number, row: number, col: number): boolean {
-        return this.isValidInputRow(val, row) && this.isValidInputCol(val, col) && this.isValidInputBox(val, row, col);
+        return this.getClashes(val, row, col).length === 0;
     }
 
-    isValidInputRow(val: number, row: number): boolean {
-        return !this.board[row].includes(val);
-    }
-
-    isValidInputCol(val: number, col:number): boolean {
-        for (var i=0; i < this.size; i++) {
-            if (this.board[i][col] === val) return false;
+    isValidInputRow(val: number, row: number, col: number, board: BoardType): [number,number][] {
+        const clashes: [number, number][] = []
+        for (let i=0; i<this.size; i++) {
+            if (i === col) continue;
+            if (board[row][i] === val) clashes.push([row, i]);
         }
-        return true;
+        return clashes
     }
 
-    isValidInputBox(val: number, row: number, col: number): boolean {
-        const startRow = Math.floor(row/3) * 3;
-        const startCol = Math.floor(col/3) * 3;
-        for (var i=startRow; i<startRow+3; i++) {
-            for (var j=startCol; j<startCol+3; j++) {
-                if (this.board[i][j] === val) return false;
+    isValidInputCol(val: number, row:number, col:number, board: BoardType): [number,number][] {
+        const clashes: [number, number][] = []
+        for (let i=0; i<this.size; i++) {
+            if (i === row) continue;
+            if (board[i][col] === val) clashes.push([row, i]);
+        }
+        return clashes
+    }
+
+    isValidInputBox(val: number, row: number, col: number, board: BoardType): [number, number][] {
+        const clashes: [number, number][] = []
+        const root: number = Math.sqrt(this.size)
+        const startRow = Math.floor(row/root) * root;
+        const startCol = Math.floor(col/root) * root;
+        for (var i=startRow; i<startRow+root; i++) {
+            for (var j=startCol; j<startCol+root; j++) {
+                if (i===row && j===col) continue;
+                if (board[i][j] === val) clashes.push([i, j]);
             }
         }
-        return true;
+        return clashes;
     }
+
+    getClashes(val: number, row: number, col: number, useGameBoard: boolean=false): [number, number][] {
+        const clashes: [number, number][] = [];
+        const toUse = useGameBoard ? this.gameBoard : this.board
+        clashes.push(...this.isValidInputRow(val, row, col, toUse));
+        clashes.push(...this.isValidInputCol(val, row, col, toUse));
+        clashes.push(...this.isValidInputBox(val, row, col, toUse));
+        return clashes;
+      }
 
     isCorrectValue(val: number|undefined, row: number, col: number): boolean {
         return this.board[row][col] === val;
