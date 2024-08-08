@@ -155,16 +155,19 @@ function Game() {
 
   return (
     <div>
-        <GameOptions newGame={newGame} createBoard={createBoard}/>
+        <div className="flex flex-row">
+          <GameOptions newGame={newGame} createBoard={createBoard}/>
+          {isCreatedBoard && 
+            <div>
+              <button className="rounded-md bg-secondary p-1 mx-4 text-white" onMouseUp={handleSaveBoard}>Save Board</button>
+              <button className="rounded-md bg-secondary p-1 mx-4 text-white" onMouseUp={handleEditBoard}>Edit Board</button>
+            </div>
+          }
+        </div>
         <Board sudoku={sudoku} board={board} selected={selected} onCellClick={handleCellClick} showErrors={showErrors}/>
         {(filledGameBoard() && ! solved) && <div className="text-red-700">There are some errors on the board</div>}
         {solved && <div className="text-emerald-600">Congratulations! Board is solved</div>}
         {notSolvable && <div className="text-red-700">This board is not solvable</div>}
-        {isCreatedBoard && 
-          <div>
-            <button className={btnClassName} onMouseUp={handleSaveBoard}>Save Board</button>
-            <button className={btnClassName} onMouseUp={handleEditBoard}>Edit Board</button>
-          </div>}
         <div className="flex flex-row justify-between items-center">
             <button className={btnClassName} onMouseUp={handleResetBoard}>Reset Board</button>
             <button className={btnClassName} onMouseUp={handleClearCell}>Clear Cell</button>
