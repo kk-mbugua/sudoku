@@ -3,10 +3,7 @@ const aClassName = "ml-5"
 function Footer() {
     return (
         <div className="flex flex-row justify-end">
-            <a href="https://github.com/kk-mbugua/sudoku" className={aClassName}>Github</a>
-            <a href="#" className={aClassName}>Privacy Policy</a>
-            <a href="#" className={aClassName}>Terms of use</a>
-            <a href="#" className="mx-5" >License</a>
+            <a href="https://github.com/kk-mbugua/sudoku" target="_blank" rel="noopener noreferrer" className={aClassName}>Github</a>
         </div>
     )
 }
